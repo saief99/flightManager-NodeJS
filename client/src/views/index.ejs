@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            padding: 0px;
+	        margin: 0px;
+	        background-size: cover;
+	        background-position: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .box1{
+	width: 400px;
+	height: 520px;
+	background: #000;
+	color: #fff;
+	top: 50%;
+	left: 33%;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	box-sizing: border-box;
+	padding: 50px 30px;
+}
+.box2{
+	width: 400px;
+	height: 520px;
+	background: #000;
+	color: #fff;
+	top: 50%;
+	left: 66%;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	box-sizing: border-box;
+	padding: 50px 30px;
+}
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        h1{
+	        margin: 0;
+	        padding: 0 0 20px;
+	        text-align: center;
+	        font-size: 22px;
+        }
+        th{
+            width: 100px;
+        }
+        td{
+            width: 150px;
+        }
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+        }
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+        }
+        .container {
+            padding: 16px;
+            display: flex;
+        }
+        /* Change styles for span and cancel button on extra small screens */
+        @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+
+            .cancelbtn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box1">
+        <table>
+            <h1>Liste de vols disponible</h1>
+            <thead>
+                <tr>
+                    <th scope="col">Depart</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<vols.length; i++) { %>
+                <tr>
+                    <td>
+                        <%= vols[i].codeDepart %>
+                    </td>
+                    <td>
+                        <%= vols[i].codeDestination %>
+                    </td>
+                    <td>
+                        <%= vols[i].prix %>
+                    </td>
+                    <td>
+                        <button onclick=reserver("<%= vols[i].volId %>")>Reserver</button>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="box2">
+        <table >
+            <h1>Mes reservations</h1>
+            <thead>
+                <tr>
+                    <th scope="col">Depart</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i<reservations.length; i++) { %>
+                <tr>
+                    <td>
+                        <%= reservations[i].codeDepart %>
+                    </td>
+                    <td>
+                        <%= reservations[i].codeDestination %>
+                    </td>
+                    <td>
+                        <%= reservations[i].prix %>
+                    </td>
+                    <td>
+                        <button onclick=annuler("<%= reservations[i].volId %>")>Annuler</button>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+</body>
+<script>
+
+    const reserver = (volId) => {
+        fetch("/reserver", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ volId })
+
+        })
+    }
+
+    //annuler: 
+    
+    const annuler = (volId) => {
+        fetch("/annuler", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ volId })
+
+        })
+    }
+</script>
+
+</html>
